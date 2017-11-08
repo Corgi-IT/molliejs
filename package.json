@@ -1,0 +1,50 @@
+{
+  "name": "molliejs",
+  "version": "0.0.1",
+  "description": "Mollie API client",
+  "main": "mollie.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://GeeX-Renzo@github.com/Geexteam/molliejs.git"
+  },
+  "keywords": [
+    "mollie",
+    "mollie-es6",
+    "payments-es6",
+    "payments",
+    "creditcard",
+    "ideal",
+    "bancontact",
+    "belfius",
+    "kbc",
+    "payments",
+    "payment",
+    "sepa",
+    "bitcoin",
+    "paypal",
+    "payment",
+    "provider",
+    "mollie",
+    "api",
+    "incasso",
+    "banktransfer",
+    "banking",
+    "paysafecard",
+    "intersolve",
+    "giftcards",
+    "podiumcadeaukaart",
+    "fashioncheque",
+    "yourgift",
+    "vvvgiftcard",
+    "webshopgiftcard"
+  ],
+  "author": "Renzo Roso <renzo@geex.company>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Geexteam/molliejs/issues"
+  },
+  "homepage": "https://github.com/Geexteam/molliejs#readme"
+}
