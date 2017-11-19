@@ -1,7 +1,7 @@
 ![Mollie](https://www.mollie.nl/files/Mollie-Logo-Style-Small.png)
 
 # molliejs
-NPM Package for the Mollie API, by and official Mollie Partner.
+NPM Package for the Mollie API, by an official Mollie Partner.
 
 [![Build Status](https://travis-ci.org/Geexteam/molliejs.svg?branch=master)](https://travis-ci.org/Geexteam/molliejs)
 [![Dependency Status](https://gemnasium.com/badges/github.com/Geexteam/molliejs.svg)](https://gemnasium.com/github.com/Geexteam/molliejs)
@@ -34,7 +34,7 @@ Initialize
     const mollieApi = new Mollie('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
 ```
 
-All callbacks are now written with `async/await`.
+All callbacks are now written with ES8' `async/await`.
 
 Create a new payment.
 ```ES8
