@@ -11,7 +11,7 @@ NPM Package for the Mollie API, by an official Mollie Partner.
 To use the this module, the following is required:
 
 + Node.js v8.0.0 or higher
-+ You can [Sign up](https://www.mollie.com/en/signup/2269941) here for free.
++ A Mollie account |[Sign up for free](https://www.mollie.com/en/signup/2269941).
 + If you need any help with setting it up, just contact us [@GeeX_dev](https://twitter.com/GeeX_dev) on twitter 
 or mail us at [development@geex.company](mailto:development@geex.company?subject=MollieES8%20Help)
 
@@ -22,8 +22,6 @@ You can install this module with NPM:
     npm install --save molliejs
 
 ## Getting started ##
-*Examples are with Express.js*
-
 Require the library.
 ```ES8
     const Mollie = require('molliejs');
@@ -38,7 +36,7 @@ All callbacks are now written with ES8' `async/await`.
 
 Create a new payment.
 ```ES8
-    async function() {
+    async () => {
         const amount = 10.00;
         const description = 'My first API payment';
         const redirectUrl = 'https://example.org/order/12345';
@@ -48,7 +46,7 @@ Create a new payment.
                 description,
                 redirectUrl
             );
-            res.redirect(payment.getPaymentUrl());
+            console.log(payment.getPaymentUrl());
         } catch (e) {
             // Handle error
         }
@@ -57,7 +55,7 @@ Create a new payment.
 
 Retrieving a payment.
 ```ES8
-    async function() {
+    async () => {
         const paymentId = 'paymentId';
         try {
             const payment = await mollieApi.payments.get(paymentId);
@@ -87,7 +85,7 @@ Retrieving a payment.
             description,
             redirectUrl
         );
-        res.redirect(payment.getPaymentUrl());
+        console.log(payment.getPaymentUrl());
     } catch (e) {
         // Handle error
     }
@@ -108,7 +106,7 @@ Retrieving a payment.
                 customerId: 'John Cena'
             }
         );
-        res.redirect(payment.getPaymentUrl());
+        console.log(payment.getPaymentUrl());
     } catch (e) {
         // Handle error
     }
