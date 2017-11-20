@@ -1,6 +1,6 @@
 {
   "name": "molliejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mollie API client for online payments like Ideal, Paypal and Creditcard",
   "main": "mollie.js",
   "scripts": {
