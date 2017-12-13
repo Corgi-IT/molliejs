@@ -11,9 +11,9 @@ NPM Package for the Mollie API, by an official Mollie Partner.
 To use the this module, the following is required:
 
 + Node.js v8.0.0 or higher
-+ A Mollie account |[Sign up for free](https://www.mollie.com/en/signup/2269941).
-+ If you need any help with setting it up, just contact us [@GeeX_dev](https://twitter.com/GeeX_dev) on twitter 
-or mail us at [development@geex.company](mailto:development@geex.company?subject=MollieES8%20Help)
++ A Mollie account | [Sign up for free](https://www.mollie.com/en/signup/2269941).
++ If you need any help with setting it up, just contact us [@GeeX_dev](https://twitter.com/GeeX_dev) on twitter
+or mail us at [development@geex.company](mailto:development@geex.company?subject=MollieJS%20Help)
 
 ## Installation ##
 
@@ -30,6 +30,8 @@ Require the library.
 Initialize
 ```ES8
     const mollieApi = new Mollie('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
+    // or
+    const mollieApi = Mollie.create('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
 ```
 
 All callbacks are now written with ES8' `async/await`.
@@ -69,6 +71,12 @@ Retrieving a payment.
 ```
 
 ## Implemented Functions ##
+
+### Test ###
+```ES8
+    const keyIsValid = await mollieApi.test(); // returns true or false
+```
+
 
 ### Payments ###
 

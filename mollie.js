@@ -3,6 +3,10 @@ const denied = require('obj-denied');
 
 class Mollie {
 
+    static create(key) {
+        return new Mollie(key);
+    }
+
     constructor(key) {
         this.key = key;
 

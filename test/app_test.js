@@ -21,6 +21,28 @@ describe('Mollie Test', () => {
         mollieOne = new Mollie(keys[0].key);
     });
 
+    describe('Construct', () => {
+        it('Should create a new instance with keyword "new"', () => {
+            const first = new Mollie(keys[0].key);
+            const second = new Mollie(keys[0].key);
+
+            first.should.have.property('payments');
+            second.should.have.property('payments');
+
+            first.should.not.equal(second);
+        });
+
+        it('Should create a new instance when calling "Mollie()"', () => {
+            const first = Mollie.create(keys[0].key);
+            const second = Mollie.create(keys[0].key);
+
+            first.should.have.property('payments');
+            second.should.have.property('payments');
+
+            first.should.not.equal(second);
+        });
+    });
+
     describe('App', () => {
         it('Should be an Object', () => {
             mollieOne.should.be.an.Object();
