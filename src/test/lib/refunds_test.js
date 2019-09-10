@@ -1,6 +1,6 @@
 "use strict";
 const {wrap} = require('co');
-const Mollie = require('../../mollie');
+const Mollie = require('../../../old/mollie');
 
 
 describe('Refunds', () => {

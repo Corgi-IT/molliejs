@@ -1,4 +1,4 @@
-const Mollie = require('../../mollie');
+const Mollie = require('../../../old/mollie');
 
 describe('Customers', () => {
     let mollieOne;
