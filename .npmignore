@@ -8,3 +8,4 @@ scripts/
 .editorconfig
 .gitignore
 .travis.yml
+old/
