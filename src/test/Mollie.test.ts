@@ -1,8 +1,6 @@
 import Mollie from '../Mollie';
 import {join} from "path";
 
-console.log('Mollie', Mollie);
-
 describe('Mollie Test', () => {
 
     let mollieOne: any;
@@ -10,14 +8,10 @@ describe('Mollie Test', () => {
     let keys: { key: string }[];
 
     beforeAll(() => {
-        // process.env.TEST_DIR = __dirname;
-
         if (process.env.MOLLIE_KEY)
             keys = [{key: process.env.MOLLIE_KEY}];
         else
             keys = require(join(process.cwd(), '/test_keys'));
-
-        console.log('keys', keys);
     });
 
     beforeEach(() => {

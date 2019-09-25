@@ -1,10 +1,11 @@
-import { IMolliePayments } from "./Types";
-declare class Mollie {
+import { IIndexedObject } from "./Types";
+import MolliePayments from './lib/payments';
+export declare class Mollie {
     readonly key: string;
-    payments: IMolliePayments;
+    payments: MolliePayments;
     static create(key: string): Mollie;
     constructor(key: string);
-    request(method: string, extension: string, data: Object, urlParameters: Object): Promise<any>;
+    request(method: string, extension: string, data: IIndexedObject, urlParameters: Object): Promise<any>;
     test(): Promise<boolean>;
 }
 export default Mollie;

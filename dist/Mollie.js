@@ -1,27 +1,16 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Types_1 = require("./Types");
 // const Payment = require('./classes/Payment');
-const payments = __importStar(require("./lib/payments"));
+const payments_1 = __importDefault(require("./lib/payments"));
 // import denied from 'obj-denied';
 const node_fetch_1 = __importDefault(require("node-fetch"));
 class Mollie {
     constructor(key) {
-        this.payments = {
-            create: payments.createGenerator(this),
-            get: payments.getGenerator(this),
-            list: payments.listGenerator(this),
-        };
+        this.payments = new payments_1.default(this);
         this.key = key;
     }
     static create(key) {
@@ -56,6 +45,7 @@ class Mollie {
         return !Types_1.isIErrorObject(result);
     }
 }
+exports.Mollie = Mollie;
 function addURLParams(urlParameters = {}) {
     if (Object.keys(urlParameters).length === 0)
         return '';
@@ -65,5 +55,6 @@ function addURLParams(urlParameters = {}) {
     }
     return urlParams.replace('&', '?');
 }
+module.exports = Mollie;
 exports.default = Mollie;
 // module.exports.Payment = Payment;

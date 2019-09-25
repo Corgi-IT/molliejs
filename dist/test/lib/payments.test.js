@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Mollie_1 = __importDefault(require("../../Mollie"));
 const Payment_1 = __importDefault(require("../../classes/Payment"));
+const Types_1 = require("../../Types");
 const path_1 = require("path");
-// const Mollie = require('../../Mollie');
 describe('Payments', () => {
     let check = 0;
     let payment_id;
@@ -81,6 +81,19 @@ describe('Payments', () => {
                     payment_id = payment.id;
                 }
             });
+            it('Should work with an app URL as callback', async () => {
+                const orderId = 12345;
+                const redirectUrl = `notores://payment/callback/${orderId}`;
+                const payment = await mollieOne.payments.create(amount, description, redirectUrl, {
+                    metadata: {
+                        orderId,
+                    }
+                });
+                if (payment instanceof Payment_1.default) {
+                    expect(payment).toHaveProperty('redirectUrl', redirectUrl);
+                    expect(payment.metadata).toHaveProperty('orderId', orderId);
+                }
+            });
         });
     });
     describe('.get', () => {
@@ -89,158 +102,84 @@ describe('Payments', () => {
                 const result = await mollieOne.payments.get(payment_id);
                 expect(result).toHaveProperty('amount');
             });
-            // it('Should have basic properties', async () => {
-            //     try {
-            //         const payment = await mollieOne.payments.get(payment_id);
-            //
-            //         payment.should.have.property('id');
-            //         payment.should.have.property('status');
-            //         payment.should.have.property('amount');
-            //         payment.should.have.property('description');
-            //         check = 1;
-            //     } catch (error) {
-            //         console.log(error);
-            //         check = 2;
-            //     }
-            //     check.should.equal(1);
-            // });
-            //
-            // it('Should have function getPaymentUrl which returns the paymentUrl', async () => {
-            //     try {
-            //         const payment = await mollieOne.payments.get(payment_id);
-            //
-            //         payment.should.have.property('getPaymentUrl');
-            //         const url = payment.getPaymentUrl();
-            //         url.should.be.an.String();
-            //         url.should.equal(payment.links.paymentUrl)
-            //         check = 1;
-            //     } catch (error) {
-            //         console.log(error);
-            //         console.log(error.stack);
-            //         check = 2;
-            //     }
-            //     check.should.equal(1);
-            // });
-            //
-            // it('Should have function isPaid, with various outcomes based on the status', async () => {
-            //     try {
-            //         let payment = await mollieOne.payments.get(payment_id);
-            //         payment.should.have.property('isPaid');
-            //         let paid = payment.isPaid();
-            //         paid.should.be.a.Boolean();
-            //         paid.should.equal(false);
-            //
-            //         payment.status = 'paid';
-            //         paid = payment.isPaid();
-            //         paid.should.be.a.Boolean();
-            //         paid.should.equal(true);
-            //
-            //         payment.status = 'paidout';
-            //         paid = payment.isPaid();
-            //         paid.should.be.a.Boolean();
-            //         paid.should.equal(true);
-            //
-            //         payment.status = 'expired';
-            //         paid = payment.isPaid();
-            //         paid.should.be.a.Boolean();
-            //         paid.should.equal(false);
-            //
-            //         check = 1;
-            //     } catch (error) {
-            //         console.log(error);
-            //         console.log(error.stack);
-            //         check = 2;
-            //     }
-            //     check.should.equal(1);
-            // });
+            it('Should have basic properties', async () => {
+                const payment = await mollieOne.payments.get(payment_id);
+                expect(payment).toBeInstanceOf(Payment_1.default);
+            });
+            it('Should have function getPaymentUrl which returns the paymentUrl', async () => {
+                const payment = await mollieOne.payments.get(payment_id);
+                if (payment instanceof Payment_1.default) {
+                    expect(payment).toHaveProperty('getPaymentUrl');
+                    const url = payment.getPaymentUrl();
+                    expect(url).toEqual(payment._links.checkout.href);
+                    check = 1;
+                }
+            });
+            it('Should have function isPaid, with various outcomes based on the status', async () => {
+                let payment = await mollieOne.payments.get(payment_id);
+                if (payment instanceof Payment_1.default) {
+                    expect(payment).toHaveProperty('isPaid');
+                    let paid = payment.isPaid();
+                    expect(paid).toBeFalsy();
+                    // @ts-ignore
+                    payment.status = 'paid';
+                    paid = payment.isPaid();
+                    expect(paid).toBeTruthy();
+                    // @ts-ignore
+                    payment.status = 'paidout';
+                    paid = payment.isPaid();
+                    expect(paid).toBeTruthy();
+                    // @ts-ignore
+                    payment.status = 'expired';
+                    paid = payment.isPaid();
+                    expect(paid).toBeFalsy();
+                }
+            });
         });
     });
-    //
-    //
-    // describe('.list', () => {
-    //     const offset = 2;
-    //     const count = 'Mollie ES6 module Test';
-    //
-    //     describe('Basics', () => {
-    //         it('Should be a function', () => {
-    //             mollieOne.payments.list.should.be.a.Function();
-    //         });
-    //     });
-    //
-    //     describe('Errors', () => {
-    //         it('Should throw an error if a count of more than 250 is given', async () => {
-    //             try {
-    //                 await mollieOne.payments.list({count: 251});
-    //                 check = 1;
-    //             } catch (error) {
-    //                 error.should.have.property('error', 'Count larger than 250 is not allowed');
-    //                 check = 2;
-    //             }
-    //             check.should.equal(2);
-    //         });
-    //     });
-    //
-    //     describe('Success', () => {
-    //         it('Should return an Object', async () => {
-    //             try {
-    //                 const payment = await mollieOne.payments.list({count: 15});
-    //                 payment.should.be.an.Object();
-    //                 check = 1;
-    //             } catch (error) {
-    //                 console.log(error);
-    //                 check = 2;
-    //             }
-    //             check.should.equal(1);
-    //         });
-    //
-    //         it('Should return certain fields', async () => {
-    //             try {
-    //                 const count = 10, offset = 2;
-    //                 const payment = await mollieOne.payments.list({count, offset});
-    //                 payment.should.have.property('totalCount');
-    //                 payment.should.have.property('offset', offset);
-    //                 payment.should.have.property('count');
-    //                 payment.should.have.property('data');
-    //                 check = 1;
-    //             } catch (error) {
-    //                 console.log(error);
-    //                 check = 2;
-    //             }
-    //             check.should.equal(1);
-    //         });
-    //
-    //         it('Should return payments with payment functions', async () => {
-    //             try {
-    //                 const payments = await mollieOne.payments.list({count: 15});
-    //                 const payment = payments.data[0];
-    //
-    //                 payment.should.have.property('getPaymentUrl');
-    //                 payment.should.have.property('isPaid');
-    //
-    //                 check = 1;
-    //             } catch (error) {
-    //                 console.log(error);
-    //                 check = 2;
-    //             }
-    //             check.should.equal(1);
-    //         });
-    //
-    //         it('Should work without parameters', async () => {
-    //             try {
-    //                 const payment = await mollieOne.payments.list();
-    //
-    //                 payment.should.have.property('totalCount');
-    //                 payment.should.have.property('offset');
-    //                 payment.should.have.property('count');
-    //                 payment.should.have.property('data');
-    //
-    //                 check = 1;
-    //             } catch (error) {
-    //                 console.log(error);
-    //                 check = 2;
-    //             }
-    //             check.should.equal(1);
-    //         });
-    //     });
-    // });
+    describe('.list', () => {
+        const offset = 2;
+        const count = 'Mollie ES6 module Test';
+        describe('Basics', () => {
+            it('Should be a function', () => {
+                expect(mollieOne.payments.list).toBeInstanceOf(Function);
+            });
+        });
+        describe('Errors', () => {
+            it('Should throw an error if a count of more than 250 is given', async () => {
+                const result = await mollieOne.payments.list({ limit: 251 });
+                expect(result).toHaveProperty('error', 'Limit larger than 250 is not allowed');
+            });
+        });
+        describe('Success', () => {
+            it('Should return an Object', async () => {
+                const payment = await mollieOne.payments.list({ limit: 15 });
+                expect(payment).toBeInstanceOf(Object);
+            });
+            it('Should return certain fields', async () => {
+                const limit = 10, from = payment_id;
+                const payment = await mollieOne.payments.list({ limit, from });
+                if (!Types_1.isIErrorObject(payment)) {
+                    expect(payment).toHaveProperty('count', limit);
+                    expect(payment).toHaveProperty('_embedded');
+                    expect(payment._embedded).toHaveProperty('payments');
+                }
+            });
+            it('Should return payments with payment functions', async () => {
+                const payments = await mollieOne.payments.list({ limit: 15 });
+                if (!Types_1.isIErrorObject(payments)) {
+                    const payment = payments._embedded.payments[0];
+                    expect(payment).toHaveProperty('getPaymentUrl');
+                    expect(payment).toHaveProperty('isPaid');
+                }
+            });
+            it('Should work without parameters', async () => {
+                const payments = await mollieOne.payments.list();
+                if (!Types_1.isIErrorObject(payments)) {
+                    expect(payments).toHaveProperty('count');
+                    expect(payments).toHaveProperty('_embedded');
+                }
+            });
+        });
+    });
 });

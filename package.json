@@ -2,9 +2,9 @@
   "name": "molliejs",
   "version": "1.1.0",
   "description": "Mollie API client for online payments like Ideal, Paypal and Creditcard",
-  "main": "dist/mollie.js",
+  "main": "dist/Mollie.js",
   "scripts": {
-    "test": "jest --no-cache",
+    "test": "jest --no-cache dist/",
     "build": "tsc",
     "build-test": "npm run build && npm run test",
     "lint": "$(npm bin)/eslint .",

@@ -95,10 +95,10 @@ export interface IMolliePaymentListResult extends IMollieRequestListResult {
     }
 }
 
-export interface IMolliePayments {
-    create: paymentsCreateType,
-    get: paymentsGetType,
-    list: paymentsListType,
+
+export interface IPaymentsListOptions {
+    from?: string,
+    limit?: number,
 }
 
 export interface IIndexedObject {

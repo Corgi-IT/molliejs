@@ -4,9 +4,8 @@ import {
     ICurrencyFormatNumbersOnlyObject,
     IErrorObject,
     IIndexedObject,
-    IMollie, IMolliePaymentListResult,
-    IPayment, isIErrorObject,
-    paymentsCreateType, paymentsGetType, paymentsListType
+    IMolliePaymentListResult,
+    IPayment, IPaymentsListOptions, isIErrorObject,
 } from "../Types";
 import {formatCurrency, getCurrencyFormatNumbersOnly} from "./Formatter";
 import Mollie from "../Mollie";
@@ -14,12 +13,13 @@ import Mollie from "../Mollie";
 const denied = require('obj-denied');
 const {assign} = Object;
 
-/**
- *
- * @param {IMollie} mollie
- * @return {paymentsCreateType}
- */
-export function createGenerator(mollie: IMollie): paymentsCreateType {
+export default class MolliePayments {
+    private mollie: Mollie;
+
+    constructor(mollie: Mollie) {
+        this.mollie = mollie;
+    }
+
     /**
      * Creates a new payment
      * @param {Number} amount The amount to be paid
@@ -29,7 +29,7 @@ export function createGenerator(mollie: IMollie): paymentsCreateType {
      * @param {string?} lang optional the supply the language to the Intl.NumberFormatter function. Defaults to nl-NL
      * @returns {Promise<Payment | Payment[] | IErrorObject>} New Payment or error, created by Mollie
      */
-    return async function create(amount: IAmount, description: string, redirectUrl: string, options?: IIndexedObject, lang?: string): Promise<Payment | IErrorObject> {
+    create = async (amount: IAmount, description: string, redirectUrl: string, options?: IIndexedObject, lang?: string): Promise<Payment | IErrorObject> => {
         if (options) {
             if (!denied(options, 'recurringType') && denied(options, 'customerId')) {
                 return {error: 'You need a customerId if you want to use recurring payments'};
@@ -50,7 +50,7 @@ export function createGenerator(mollie: IMollie): paymentsCreateType {
         }, options);
 
         // @ts-ignore
-        const result: IPayment | IErrorObject = await mollie.request(
+        const result: IPayment | IErrorObject = await this.mollie.request(
             'POST',
             'payments',
             opts
@@ -62,68 +62,55 @@ export function createGenerator(mollie: IMollie): paymentsCreateType {
             return readifyPayment(result as IPayment);
         }
     }
-}
 
-/**
- *
- * @param {IMollie} mollie
- * @return {getType}
- */
-export function getGenerator(mollie: IMollie): paymentsGetType {
     /**
      * Get information about a payment from Mollie by it's id
      * @param {String} id The payments id
      * @returns {Object} Payment information or error, given by Mollie
      */
-    return async function get(id: string): Promise<IPayment> {
+    get = async (id: string): Promise<IPayment | IErrorObject> => {
         if (!id) {
             throw {error: 'No id is given'};
         }
 
         // @ts-ignore
-        const result = await mollie.request(
+        const result = await this.mollie.request(
             'GET',
             `payments/${id}`
         );
 
         if (result.error) {
-            throw result;
+            return result;
         } else {
-            return readifyPayment(result as IPayment);
+            return readifyPayment(result);
         }
     }
-}
 
-/**
- *
- * @param {IMollie} mollie
- * @return {paymentsListType}
- */
-export function listGenerator(mollie: IMollie): paymentsListType {
     /**
      * Retrieves a list of payments from Mollie
      * @param {Object} options Options Mollie accepts for Payment.List
      * @returns {Object} List of payments along with some other data
      */
-    return async function list(options?: any): Promise<IMolliePaymentListResult | IErrorObject> {
-        if (!denied(options, 'count') && options.count > 250) {
-            throw {error: 'Count larger than 250 is not allowed'};
+    list = async (options?: IPaymentsListOptions): Promise<IMolliePaymentListResult | IErrorObject> => {
+        if (options && options.limit && options.limit > 250) {
+            return {error: 'Limit larger than 250 is not allowed'};
         }
 
-        const result: IMolliePaymentListResult | IErrorObject = await mollie.request(
+        const result: IMolliePaymentListResult | IErrorObject = await this.mollie.request(
             'GET',
             'payments',
             {},
-            options
+            options || {}
         );
 
         if (isIErrorObject(result)) {
-            return result as IErrorObject;
+            return result;
         } else {
             result._embedded.payments = readifyPayments(result._embedded.payments);
             return result;
         }
     }
+
 }
 
 function readifyPayment(payment: IPayment): Payment {

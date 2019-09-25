@@ -1,20 +1,14 @@
-import {IIndexedObject, IMolliePayments, isIErrorObject} from "./Types";
+import {IIndexedObject, isIErrorObject} from "./Types";
 
 // const Payment = require('./classes/Payment');
-import * as payments from './lib/payments';
+import MolliePayments from './lib/payments';
 // import denied from 'obj-denied';
 import fetch from 'node-fetch';
 
-
-class Mollie {
+export class Mollie {
 
     readonly key: string;
-    payments: IMolliePayments = {
-        create: payments.createGenerator(this),
-        get: payments.getGenerator(this),
-        list: payments.listGenerator(this),
-    };
-
+    payments: MolliePayments = new MolliePayments(this);
 
     static create(key: string): Mollie {
         return new Mollie(key);
@@ -24,7 +18,7 @@ class Mollie {
         this.key = key;
     }
 
-    async request(method: string, extension: string, data: Object, urlParameters: Object): Promise<any> {
+    async request(method: string, extension: string, data: IIndexedObject, urlParameters: Object): Promise<any> {
         if (!this.key) {
             return {error: 'There is no API key I can use, please set your key `this.key`'};
         }
@@ -61,7 +55,6 @@ class Mollie {
 
         return !isIErrorObject(result);
     }
-
 }
 
 function addURLParams(urlParameters: IIndexedObject = {}): string {
@@ -77,5 +70,6 @@ function addURLParams(urlParameters: IIndexedObject = {}): string {
     return urlParams.replace('&', '?');
 }
 
+module.exports = Mollie;
 export default Mollie;
 // module.exports.Payment = Payment;

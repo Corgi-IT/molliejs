@@ -5,17 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Mollie_1 = __importDefault(require("../Mollie"));
 const path_1 = require("path");
-console.log('Mollie', Mollie_1.default);
 describe('Mollie Test', () => {
     let mollieOne;
     let keys;
     beforeAll(() => {
-        // process.env.TEST_DIR = __dirname;
         if (process.env.MOLLIE_KEY)
             keys = [{ key: process.env.MOLLIE_KEY }];
         else
             keys = require(path_1.join(process.cwd(), '/test_keys'));
-        console.log('keys', keys);
     });
     beforeEach(() => {
         try {

@@ -79,10 +79,9 @@ export interface IMolliePaymentListResult extends IMollieRequestListResult {
         payments: IPayment[];
     };
 }
-export interface IMolliePayments {
-    create: paymentsCreateType;
-    get: paymentsGetType;
-    list: paymentsListType;
+export interface IPaymentsListOptions {
+    from?: string;
+    limit?: number;
 }
 export interface IIndexedObject {
     [key: string]: any;
