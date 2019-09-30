@@ -32,7 +32,7 @@ describe('Payments', () => {
             currency: 'EUR',
             value: 10.00
         };
-        const description = 'Mollie ES6 module Test';
+        const description = 'MollieJS module Test for NPM package https://www.npmjs.com/package/molliejs';
         const redirectUrl = 'http://example.org/order/12345';
 
         describe('Basics', () => {
@@ -111,6 +111,25 @@ describe('Payments', () => {
                 const redirectUrl = `notores://payment/callback/${orderId}`;
                 const payment = await mollieOne.payments.create(amount, description, redirectUrl,
                     {
+                        metadata: {
+                            orderId,
+                        }
+                    }
+                );
+
+                if (payment instanceof Payment) {
+                    expect(payment).toHaveProperty('redirectUrl', redirectUrl);
+                    expect(payment.metadata).toHaveProperty('orderId', orderId);
+                }
+            });
+
+            it('Should work with an issuer if method is iDeal', async () => {
+                const orderId = 12345;
+                const redirectUrl = `notores://payment/callback/${orderId}`;
+                const payment = await mollieOne.payments.create(amount, description, redirectUrl,
+                    {
+                        method: 'ideal',
+                        issuer: 'ideal_ABNANL2A',
                         metadata: {
                             orderId,
                         }

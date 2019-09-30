@@ -61,7 +61,7 @@ export default class MolliePayments {
         } else {
             return readifyPayment(result as IPayment);
         }
-    }
+    };
 
     /**
      * Get information about a payment from Mollie by it's id
@@ -73,7 +73,6 @@ export default class MolliePayments {
             throw {error: 'No id is given'};
         }
 
-        // @ts-ignore
         const result = await this.mollie.request(
             'GET',
             `payments/${id}`
@@ -84,7 +83,7 @@ export default class MolliePayments {
         } else {
             return readifyPayment(result);
         }
-    }
+    };
 
     /**
      * Retrieves a list of payments from Mollie
@@ -109,7 +108,7 @@ export default class MolliePayments {
             result._embedded.payments = readifyPayments(result._embedded.payments);
             return result;
         }
-    }
+    };
 
 }
 

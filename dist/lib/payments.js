@@ -53,7 +53,6 @@ class MolliePayments {
             if (!id) {
                 throw { error: 'No id is given' };
             }
-            // @ts-ignore
             const result = await this.mollie.request('GET', `payments/${id}`);
             if (result.error) {
                 return result;

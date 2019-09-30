@@ -1,14 +1,16 @@
-import {IIndexedObject, isIErrorObject} from "./Types";
+import {IErrorObject, IIndexedObject, isIErrorObject} from "./Types";
 
 // const Payment = require('./classes/Payment');
 import MolliePayments from './lib/payments';
 // import denied from 'obj-denied';
 import fetch from 'node-fetch';
+import MollieMethods from "./lib/methods";
 
 export class Mollie {
 
     readonly key: string;
     payments: MolliePayments = new MolliePayments(this);
+    methods: MollieMethods = new MollieMethods(this);
 
     static create(key: string): Mollie {
         return new Mollie(key);
@@ -18,7 +20,7 @@ export class Mollie {
         this.key = key;
     }
 
-    async request(method: string, extension: string, data: IIndexedObject, urlParameters: Object): Promise<any> {
+    async request(method: string, extension: string, data?: IIndexedObject, urlParameters?: Object): Promise<any> {
         if (!this.key) {
             return {error: 'There is no API key I can use, please set your key `this.key`'};
         }

@@ -8,9 +8,11 @@ const Types_1 = require("./Types");
 const payments_1 = __importDefault(require("./lib/payments"));
 // import denied from 'obj-denied';
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const methods_1 = __importDefault(require("./lib/methods"));
 class Mollie {
     constructor(key) {
         this.payments = new payments_1.default(this);
+        this.methods = new methods_1.default(this);
         this.key = key;
     }
     static create(key) {
