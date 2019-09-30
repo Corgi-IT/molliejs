@@ -9,7 +9,6 @@ const path_1 = require("path");
 const methods_1 = __importDefault(require("../../lib/methods"));
 describe('Payments', () => {
     let check = 0;
-    let method_id;
     let mollieOne;
     let keys;
     beforeAll(() => {
@@ -52,6 +51,18 @@ describe('Payments', () => {
                 const resultPayments = await mollieOne.methods.list(Types_1.SequenceTypeEnum.oneoff, { resource: Types_1.MethodResourceEnum.payments });
                 expect(resultOrders).not.toHaveProperty('error');
                 expect(resultPayments).not.toHaveProperty('error');
+            });
+            it('Should accept the option "include"', async () => {
+                const resultIssuers = await mollieOne.methods.list(Types_1.SequenceTypeEnum.oneoff, { include: Types_1.MethodListIncludeEnum.issuers });
+                const resultPricing = await mollieOne.methods.list(Types_1.SequenceTypeEnum.oneoff, { include: Types_1.MethodListIncludeEnum.pricing });
+                expect(resultIssuers).not.toHaveProperty('error');
+                expect(resultPricing).not.toHaveProperty('error');
+                if (methods_1.default.isIMollieMethodListResult(resultIssuers)) {
+                    expect(resultIssuers._embedded.methods[0]).toHaveProperty('issuers');
+                }
+                else {
+                    throw new Error('Result is not IMollieMethodListResult');
+                }
             });
         });
     });

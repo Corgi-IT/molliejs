@@ -1,4 +1,4 @@
-import { IAmount, IErrorObject, IMethod, IMethodListOptions, LocaleEnum, MethodListIncludesEnum, SequenceTypeEnum, IMollieMethodListResult } from "../Types";
+import { IAmount, IErrorObject, IMethod, IMethodListOptions, LocaleEnum, MethodListIncludeEnum, SequenceTypeEnum, IMollieMethodListResult } from "../Types";
 import Mollie from "../Mollie";
 export default class MollieMethods {
     private mollie;
@@ -29,6 +29,6 @@ export default class MollieMethods {
      * @param {MethodListIncludesEnum} include
      * @returns {Object} List of payments along with some other data
      */
-    listAll: (locale?: LocaleEnum, amount?: IAmount | undefined, include?: MethodListIncludesEnum | undefined) => Promise<IErrorObject | IMollieMethodListResult[]>;
+    listAll: (locale?: LocaleEnum, amount?: IAmount | undefined, include?: MethodListIncludeEnum | undefined) => Promise<IErrorObject | IMollieMethodListResult[]>;
 }
 //# sourceMappingURL=methods.d.ts.map

@@ -7,7 +7,7 @@ import {
     IMethodListOptions,
     IMolliePaymentListResult,
     LocaleEnum,
-    MethodListIncludesEnum,
+    MethodListIncludeEnum,
     SequenceTypeEnum,
     IMollieMethodListResult, IIndexedObject,
 } from "../Types";
@@ -87,7 +87,7 @@ export default class MollieMethods {
      * @param {MethodListIncludesEnum} include
      * @returns {Object} List of payments along with some other data
      */
-    listAll = async (locale: LocaleEnum = LocaleEnum.nl_NL, amount?: IAmount, include?: MethodListIncludesEnum): Promise<IMollieMethodListResult[] | IErrorObject> => {
+    listAll = async (locale: LocaleEnum = LocaleEnum.nl_NL, amount?: IAmount, include?: MethodListIncludeEnum): Promise<IMollieMethodListResult[] | IErrorObject> => {
         const urlParams: IIndexedObject = {
             locale,
             include

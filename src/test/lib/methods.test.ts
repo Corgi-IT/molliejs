@@ -1,6 +1,6 @@
 "use strict";
 import Mollie from "../../Mollie";
-import {MethodResourceEnum, SequenceTypeEnum} from "../../Types";
+import {MethodListIncludeEnum, MethodResourceEnum, SequenceTypeEnum} from "../../Types";
 import {join} from 'path';
 import MollieMethods from "../../lib/methods";
 
@@ -57,7 +57,20 @@ describe('Payments', () => {
 
                 expect(resultOrders).not.toHaveProperty('error');
                 expect(resultPayments).not.toHaveProperty('error');
-            })
+            });
+
+            it('Should accept the option "include"', async() => {
+                const resultIssuers = await mollieOne.methods.list(SequenceTypeEnum.oneoff, {include: MethodListIncludeEnum.issuers});
+                const resultPricing = await mollieOne.methods.list(SequenceTypeEnum.oneoff, {include: MethodListIncludeEnum.pricing});
+
+                expect(resultIssuers).not.toHaveProperty('error');
+                expect(resultPricing).not.toHaveProperty('error');
+                if(MollieMethods.isIMollieMethodListResult(resultIssuers)) {
+                    expect(resultIssuers._embedded.methods[0]).toHaveProperty('issuers');
+                } else {
+                    throw new Error('Result is not IMollieMethodListResult');
+                }
+            });
         });
     });
 

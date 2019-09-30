@@ -67,7 +67,7 @@ export declare enum MethodResourceEnum {
 export declare enum WalletsEnum {
     applepay = "applepay"
 }
-export declare enum MethodListIncludesEnum {
+export declare enum MethodListIncludeEnum {
     issuers = "issuers",
     pricing = "pricing"
 }
@@ -170,7 +170,7 @@ export interface IMethodListOptions {
     resource?: MethodResourceEnum;
     billingCountry?: string;
     includeWallets?: WalletsEnum;
-    includes?: MethodListIncludesEnum;
+    include?: MethodListIncludeEnum;
 }
 export interface IIndexedObject {
     [key: string]: any;

@@ -74,11 +74,11 @@ var WalletsEnum;
 (function (WalletsEnum) {
     WalletsEnum["applepay"] = "applepay";
 })(WalletsEnum = exports.WalletsEnum || (exports.WalletsEnum = {}));
-var MethodListIncludesEnum;
-(function (MethodListIncludesEnum) {
-    MethodListIncludesEnum["issuers"] = "issuers";
-    MethodListIncludesEnum["pricing"] = "pricing";
-})(MethodListIncludesEnum = exports.MethodListIncludesEnum || (exports.MethodListIncludesEnum = {}));
+var MethodListIncludeEnum;
+(function (MethodListIncludeEnum) {
+    MethodListIncludeEnum["issuers"] = "issuers";
+    MethodListIncludeEnum["pricing"] = "pricing";
+})(MethodListIncludeEnum = exports.MethodListIncludeEnum || (exports.MethodListIncludeEnum = {}));
 function isIErrorObject(obj) {
     return obj.hasOwnProperty('error');
 }
