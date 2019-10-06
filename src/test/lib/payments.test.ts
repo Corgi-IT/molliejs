@@ -103,7 +103,51 @@ describe('Payments', () => {
                     expect(paid).toBeFalsy();
                     payment_id = payment.id;
                 }
+            });
 
+            it('Should work with a value over 1000', async () => {
+                amount.value = 1234.56;
+                const payment = await mollieOne.payments.create(amount, description, redirectUrl);
+                expect(payment).toHaveProperty('isPaid');
+
+                if (payment instanceof Payment) {
+                    const paid = payment.isPaid();
+                    expect(paid).toBeFalsy();
+                    payment_id = payment.id;
+                }
+            });
+
+            it('Should work with a value over 1000 in other currencies', async () => {
+                amount.value = 1234.56;
+                amount.currency = 'USD';
+                const payment = await mollieOne.payments.create(amount, description, redirectUrl);
+
+                amount.currency = 'EUR';
+
+                expect(payment).toHaveProperty('isPaid');
+
+                if (payment instanceof Payment) {
+                    const paid = payment.isPaid();
+                    expect(paid).toBeFalsy();
+                    payment_id = payment.id;
+                }
+            });
+
+            it('Should work with a value over 10000000 in other currencies', async () => {
+                amount.value = 12345679.12;
+                amount.currency = 'USD';
+                const payment = await mollieOne.payments.create(amount, description, redirectUrl);
+
+                amount.value = 10.00;
+                amount.currency = 'EUR';
+
+                expect(payment).toHaveProperty('isPaid');
+
+                if (payment instanceof Payment) {
+                    const paid = payment.isPaid();
+                    expect(paid).toBeFalsy();
+                    payment_id = payment.id;
+                }
             });
 
             it('Should work with an app URL as callback', async () => {

@@ -14,6 +14,7 @@ function formatCurrency(value, format, lang) {
     let result = Intl.NumberFormat(lang, localFormat).format(value);
     if (stripSymbols) {
         result = result.replace(/[a-z]{3}/i, "").trim();
+        result = result.replace(/,/g, '');
     }
     return result;
 }

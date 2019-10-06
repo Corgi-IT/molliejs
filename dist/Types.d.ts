@@ -112,7 +112,7 @@ export interface IMethod {
         svg: string;
     };
     pricing?: IMethodListPricing[];
-    issuer?: IMethodListIssuers[];
+    issuers?: IMethodListIssuers[];
     _links: {
         self: IIndexedObject;
     };
