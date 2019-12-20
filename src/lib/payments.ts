@@ -1,11 +1,12 @@
 import Payment from "../classes/Payment";
 import {
+    Dictionary,
     IAmount,
     ICurrencyFormatNumbersOnlyObject,
     IErrorObject,
     IIndexedObject,
     IMolliePaymentListResult,
-    IPayment, IPaymentsListOptions, isIErrorObject,
+    IPaymentsListOptions,
 } from "../Types";
 import {formatCurrency, getCurrencyFormatNumbersOnly} from "./Formatter";
 import Mollie from "../Mollie";
@@ -29,13 +30,13 @@ export default class MolliePayments {
      * @param {string?} lang optional the supply the language to the Intl.NumberFormatter function. Defaults to nl-NL
      * @returns {Promise<Payment | Payment[] | IErrorObject>} New Payment or error, created by Mollie
      */
-    create = async (amount: IAmount, description: string, redirectUrl: string, options?: IIndexedObject, lang?: string): Promise<Payment | IErrorObject> => {
+    create = async (amount: IAmount, description: string, redirectUrl: string, options?: Dictionary, lang?: string): Promise<Payment | Error> => {
         if (options) {
             if (!denied(options, 'recurringType') && denied(options, 'customerId')) {
-                return {error: 'You need a customerId if you want to use recurring payments'};
+                return new Error('You need a customerId if you want to use recurring payments');
             }
             if (!denied(options, 'recurringType') && ['first', 'recurring'].indexOf(options.recurringType) === -1) {
-                return {error: 'recurringType needs value "first" or "recurring"'};
+                return new Error('recurringType needs value "first" or "recurring"');
             }
         }
 
@@ -49,17 +50,16 @@ export default class MolliePayments {
             redirectUrl
         }, options);
 
-        // @ts-ignore
-        const result: IPayment | IErrorObject = await this.mollie.request(
+        const result: Payment | Error = await this.mollie.request(
             'POST',
             'payments',
             opts
         );
 
-        if (result.hasOwnProperty('error')) {
+        if (result instanceof Error) {
             return result;
         } else {
-            return readifyPayment(result as IPayment);
+            return readifyPayment(result);
         }
     };
 
@@ -68,9 +68,9 @@ export default class MolliePayments {
      * @param {String} id The payments id
      * @returns {Object} Payment information or error, given by Mollie
      */
-    get = async (id: string): Promise<IPayment | IErrorObject> => {
+    get = async (id: string): Promise<Payment | Error> => {
         if (!id) {
-            throw {error: 'No id is given'};
+            return new Error('No id is given');
         }
 
         const result = await this.mollie.request(
@@ -78,7 +78,7 @@ export default class MolliePayments {
             `payments/${id}`
         );
 
-        if (result.error) {
+        if (result instanceof Error) {
             return result;
         } else {
             return readifyPayment(result);
@@ -90,19 +90,18 @@ export default class MolliePayments {
      * @param {Object} options Options Mollie accepts for Payment.List
      * @returns {Object} List of payments along with some other data
      */
-    list = async (options?: IPaymentsListOptions): Promise<IMolliePaymentListResult | IErrorObject> => {
+    list = async (options?: IPaymentsListOptions): Promise<IMolliePaymentListResult | Error> => {
         if (options && options.limit && options.limit > 250) {
-            return {error: 'Limit larger than 250 is not allowed'};
+            return new Error('Limit larger than 250 is not allowed');
         }
 
-        const result: IMolliePaymentListResult | IErrorObject = await this.mollie.request(
+        const result: IMolliePaymentListResult | Error = await this.mollie.request(
             'GET',
             'payments',
             {},
-            options || {}
+            <Dictionary>options || {}
         );
-
-        if (isIErrorObject(result)) {
+        if (result instanceof Error) {
             return result;
         } else {
             result._embedded.payments = readifyPayments(result._embedded.payments);
@@ -112,11 +111,11 @@ export default class MolliePayments {
 
 }
 
-function readifyPayment(payment: IPayment): Payment {
+function readifyPayment(payment: Payment): Payment {
     return new Payment(payment);
 }
 
-function readifyPayments(payments: IPayment[]) {
+function readifyPayments(payments: Payment[]) {
     for (let i = 0; i < payments.length; i++) {
         payments[i] = new Payment(payments[i]);
         // Object.setPrototypeOf(payments[i], Payment.prototype);

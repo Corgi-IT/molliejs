@@ -7,7 +7,7 @@ class Payment {
     }
     /**
      * Returns a boolean stating the order is paid or not
-     * @returns {Boolean} Order is paid or not
+     * @returns {boolean} Order is paid or not
      */
     isPaid() {
         return this.status.toLowerCase() === Types_1.PaymentStatusEnum.paid || this.status.toLowerCase() === Types_1.PaymentStatusEnum.paidout;

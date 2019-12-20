@@ -49,9 +49,9 @@ export default class Payment {
 
     /**
      * Returns a boolean stating the order is paid or not
-     * @returns {Boolean} Order is paid or not
+     * @returns {boolean} Order is paid or not
      */
-    isPaid(): Boolean {
+    isPaid(): boolean {
         return this.status.toLowerCase() === PaymentStatusEnum.paid || this.status.toLowerCase() === PaymentStatusEnum.paidout;
     }
 

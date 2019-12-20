@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Types_1 = require("./Types");
 // const Payment = require('./classes/Payment');
 const payments_1 = __importDefault(require("./lib/payments"));
 // import denied from 'obj-denied';
@@ -20,7 +19,7 @@ class Mollie {
     }
     async request(method, extension, data, urlParameters) {
         if (!this.key) {
-            return { error: 'There is no API key I can use, please set your key `this.key`' };
+            return new Error('There is no API key I can use, please set your key `this.key`');
         }
         method = method.toLowerCase();
         const fetchOptions = {
@@ -34,29 +33,25 @@ class Mollie {
         if (method !== 'get') {
             fetchOptions.body = JSON.stringify(data);
         }
-        const result = await node_fetch_1.default(`https://api.mollie.nl/v2/${extension}${addURLParams(urlParameters)}`, fetchOptions);
+        const result = await node_fetch_1.default(`https://api.mollie.nl/v2/${extension}${genQueryString(urlParameters)}`, fetchOptions);
         try {
             return await result.json();
         }
         catch (e) {
-            return { error: e.message };
+            return e;
         }
     }
     async test() {
         const result = await this.payments.list();
-        return !Types_1.isIErrorObject(result);
+        return !(result instanceof Error);
     }
 }
 exports.Mollie = Mollie;
-function addURLParams(urlParameters = {}) {
-    if (Object.keys(urlParameters).length === 0)
+const genQueryString = (query) => {
+    if (!query)
         return '';
-    let urlParams = '';
-    for (let prop in urlParameters) {
-        urlParams += `&${prop}=${urlParameters[prop]}`;
-    }
-    return urlParams.replace('&', '?');
-}
+    return '?' + Object.keys(query).map(key => key + '=' + query[key]).join('&');
+};
 module.exports = Mollie;
 exports.default = Mollie;
 // module.exports.Payment = Payment;

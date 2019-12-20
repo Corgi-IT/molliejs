@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Mollie_1 = __importDefault(require("../../Mollie"));
 const Payment_1 = __importDefault(require("../../classes/Payment"));
-const Types_1 = require("../../Types");
 const path_1 = require("path");
 describe('Payments', () => {
     let check = 0;
@@ -42,14 +41,14 @@ describe('Payments', () => {
         describe('Errors', () => {
             it('Should return an error object if recurringType is set, but no customerID', async () => {
                 const result = await mollieOne.payments.create(amount, description, redirectUrl, { recurringType: 'first' });
-                expect(result).toHaveProperty('error');
+                expect(result).toBeInstanceOf(Error);
             });
             it('Should return an error object if recurringType is not "first" or "recurring"', async () => {
                 const result = await mollieOne.payments.create(amount, description, redirectUrl, {
                     recurringType: 'amazing!!',
                     customerId: 'John Cena'
                 });
-                expect(result).toHaveProperty('error');
+                expect(result).toBeInstanceOf(Error);
             });
         });
         describe('Success', () => {
@@ -196,9 +195,14 @@ describe('Payments', () => {
             });
         });
         describe('Errors', () => {
-            it('Should throw an error if a count of more than 250 is given', async () => {
+            it('Should return an Error if a count of more than 250 is given', async () => {
                 const result = await mollieOne.payments.list({ limit: 251 });
-                expect(result).toHaveProperty('error', 'Limit larger than 250 is not allowed');
+                if (result instanceof Error) {
+                    expect(result.message).toBe('Limit larger than 250 is not allowed');
+                }
+                else {
+                    expect(true).toBeFalsy();
+                }
             });
         });
         describe('Success', () => {
@@ -209,7 +213,10 @@ describe('Payments', () => {
             it('Should return certain fields', async () => {
                 const limit = 10, from = payment_id;
                 const payment = await mollieOne.payments.list({ limit, from });
-                if (!Types_1.isIErrorObject(payment)) {
+                if (payment instanceof Error) {
+                    expect(true).toBeFalsy();
+                }
+                else {
                     expect(payment).toHaveProperty('count', limit);
                     expect(payment).toHaveProperty('_embedded');
                     expect(payment._embedded).toHaveProperty('payments');
@@ -217,7 +224,10 @@ describe('Payments', () => {
             });
             it('Should return payments with payment functions', async () => {
                 const payments = await mollieOne.payments.list({ limit: 15 });
-                if (!Types_1.isIErrorObject(payments)) {
+                if (payments instanceof Error) {
+                    expect(true).toBeFalsy();
+                }
+                else {
                     const payment = payments._embedded.payments[0];
                     expect(payment).toHaveProperty('getPaymentUrl');
                     expect(payment).toHaveProperty('isPaid');
@@ -225,7 +235,7 @@ describe('Payments', () => {
             });
             it('Should work without parameters', async () => {
                 const payments = await mollieOne.payments.list();
-                if (!Types_1.isIErrorObject(payments)) {
+                if (!(payments instanceof Error)) {
                     expect(payments).toHaveProperty('count');
                     expect(payments).toHaveProperty('_embedded');
                 }

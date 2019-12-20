@@ -1,4 +1,4 @@
-import {IErrorObject, IIndexedObject, isIErrorObject} from "./Types";
+import {Dictionary, IErrorObject, IIndexedObject} from "./Types";
 
 // const Payment = require('./classes/Payment');
 import MolliePayments from './lib/payments';
@@ -20,9 +20,9 @@ export class Mollie {
         this.key = key;
     }
 
-    async request(method: string, extension: string, data?: IIndexedObject, urlParameters?: Object): Promise<any> {
+    async request(method: string, extension: string, data?: IIndexedObject, urlParameters?: Dictionary): Promise<any | Error> {
         if (!this.key) {
-            return {error: 'There is no API key I can use, please set your key `this.key`'};
+            return new Error('There is no API key I can use, please set your key `this.key`');
         }
         method = method.toLowerCase();
 
@@ -40,14 +40,14 @@ export class Mollie {
         }
 
         const result = await fetch(
-            `https://api.mollie.nl/v2/${extension}${addURLParams(urlParameters)}`,
+            `https://api.mollie.nl/v2/${extension}${genQueryString(urlParameters)}`,
             fetchOptions
         );
 
         try {
             return await result.json();
         } catch (e) {
-            return {error: e.message};
+            return e;
         }
 
     }
@@ -55,22 +55,15 @@ export class Mollie {
     async test() {
         const result = await this.payments.list();
 
-        return !isIErrorObject(result);
+        return !(result instanceof Error);
     }
 }
 
-function addURLParams(urlParameters: IIndexedObject = {}): string {
-    if (Object.keys(urlParameters).length === 0)
+const genQueryString = (query?: Dictionary): string => {
+    if (!query)
         return '';
-
-    let urlParams = '';
-
-    for (let prop in urlParameters) {
-        urlParams += `&${prop}=${urlParameters[prop]}`;
-    }
-
-    return urlParams.replace('&', '?');
-}
+    return '?' + Object.keys(query).map(key => key + '=' + query[key]).join('&');
+};
 
 module.exports = Mollie;
 export default Mollie;

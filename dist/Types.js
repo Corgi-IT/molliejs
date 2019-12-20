@@ -79,7 +79,3 @@ var MethodListIncludeEnum;
     MethodListIncludeEnum["issuers"] = "issuers";
     MethodListIncludeEnum["pricing"] = "pricing";
 })(MethodListIncludeEnum = exports.MethodListIncludeEnum || (exports.MethodListIncludeEnum = {}));
-function isIErrorObject(obj) {
-    return obj.hasOwnProperty('error');
-}
-exports.isIErrorObject = isIErrorObject;

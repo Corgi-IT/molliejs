@@ -35,9 +35,9 @@ export default class Payment {
     constructor(incoming: Object);
     /**
      * Returns a boolean stating the order is paid or not
-     * @returns {Boolean} Order is paid or not
+     * @returns {boolean} Order is paid or not
      */
-    isPaid(): Boolean;
+    isPaid(): boolean;
     /**
      * Returns the checkout string for this payment
      * @returns {string} Checkout link

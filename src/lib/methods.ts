@@ -9,7 +9,7 @@ import {
     LocaleEnum,
     MethodListIncludeEnum,
     SequenceTypeEnum,
-    IMollieMethodListResult, IIndexedObject,
+    IMollieMethodListResult, IIndexedObject, Dictionary,
 } from "../Types";
 import {formatCurrency, getCurrencyFormatNumbersOnly} from "./Formatter";
 import Mollie from "../Mollie";
@@ -52,7 +52,7 @@ export default class MollieMethods {
             'GET',
             'methods',
             {},
-            {
+            <Dictionary>{
                 sequenceType,
                 ...options,
             }
@@ -76,7 +76,7 @@ export default class MollieMethods {
             'GET',
             `methods/${method}`,
             {},
-            options
+            <Dictionary>options
         );
     };
 

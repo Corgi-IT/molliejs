@@ -1,5 +1,4 @@
 import Payment from "./classes/Payment";
-import Mollie from "./Mollie";
 export declare enum PaymentStatusEnum {
     paid = "paid",
     paidout = "paidout",
@@ -70,10 +69,6 @@ export declare enum WalletsEnum {
 export declare enum MethodListIncludeEnum {
     issuers = "issuers",
     pricing = "pricing"
-}
-export interface IMollie extends Mollie {
-}
-export interface IPayment extends Payment {
 }
 export interface IMethodListPricing {
     description: string;
@@ -152,7 +147,7 @@ export interface IMollieRequestListResult extends IMollieRequestResult {
 }
 export interface IMolliePaymentListResult extends IMollieRequestListResult {
     _embedded: {
-        payments: IPayment[];
+        payments: Payment[];
     };
 }
 export interface IMollieMethodListResult extends IMollieRequestListResult {
@@ -178,8 +173,10 @@ export interface IIndexedObject {
 export interface IErrorObject {
     error: string;
 }
-export declare function isIErrorObject(obj: any): obj is IErrorObject;
 export declare type paymentsCreateType = (amount: IAmount, description: string, redirectUrl: string, options?: IIndexedObject, lang?: string) => Promise<Payment | IErrorObject>;
 export declare type paymentsGetType = (id: string) => Promise<Payment | IErrorObject>;
 export declare type paymentsListType = (options?: Object) => Promise<IMolliePaymentListResult | IErrorObject>;
+export declare type Dictionary = {
+    [index: string]: any;
+};
 //# sourceMappingURL=Types.d.ts.map

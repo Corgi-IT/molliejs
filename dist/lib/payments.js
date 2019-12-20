@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Payment_1 = __importDefault(require("../classes/Payment"));
-const Types_1 = require("../Types");
 const Formatter_1 = require("./Formatter");
 const denied = require('obj-denied');
 const { assign } = Object;
@@ -22,10 +21,10 @@ class MolliePayments {
         this.create = async (amount, description, redirectUrl, options, lang) => {
             if (options) {
                 if (!denied(options, 'recurringType') && denied(options, 'customerId')) {
-                    return { error: 'You need a customerId if you want to use recurring payments' };
+                    return new Error('You need a customerId if you want to use recurring payments');
                 }
                 if (!denied(options, 'recurringType') && ['first', 'recurring'].indexOf(options.recurringType) === -1) {
-                    return { error: 'recurringType needs value "first" or "recurring"' };
+                    return new Error('recurringType needs value "first" or "recurring"');
                 }
             }
             const formatObject = Formatter_1.getCurrencyFormatNumbersOnly(amount.currency);
@@ -35,9 +34,8 @@ class MolliePayments {
                 description,
                 redirectUrl
             }, options);
-            // @ts-ignore
             const result = await this.mollie.request('POST', 'payments', opts);
-            if (result.hasOwnProperty('error')) {
+            if (result instanceof Error) {
                 return result;
             }
             else {
@@ -51,10 +49,10 @@ class MolliePayments {
          */
         this.get = async (id) => {
             if (!id) {
-                throw { error: 'No id is given' };
+                return new Error('No id is given');
             }
             const result = await this.mollie.request('GET', `payments/${id}`);
-            if (result.error) {
+            if (result instanceof Error) {
                 return result;
             }
             else {
@@ -68,10 +66,10 @@ class MolliePayments {
          */
         this.list = async (options) => {
             if (options && options.limit && options.limit > 250) {
-                return { error: 'Limit larger than 250 is not allowed' };
+                return new Error('Limit larger than 250 is not allowed');
             }
             const result = await this.mollie.request('GET', 'payments', {}, options || {});
-            if (Types_1.isIErrorObject(result)) {
+            if (result instanceof Error) {
                 return result;
             }
             else {

@@ -80,13 +80,6 @@ export enum MethodListIncludeEnum {
     pricing = 'pricing',
 }
 
-export interface IMollie extends Mollie {
-
-}
-
-export interface IPayment extends Payment {
-}
-
 export interface IMethodListPricing {
     description: string,
     fixed: {
@@ -174,7 +167,7 @@ export interface IMollieRequestListResult extends IMollieRequestResult {
 
 export interface IMolliePaymentListResult extends IMollieRequestListResult {
     _embedded: {
-        payments: IPayment[]
+        payments: Payment[]
     }
 }
 
@@ -206,10 +199,7 @@ export interface IErrorObject {
     error: string,
 }
 
-export function isIErrorObject(obj: any): obj is IErrorObject {
-    return obj.hasOwnProperty('error');
-}
-
 export declare type paymentsCreateType = (amount: IAmount, description: string, redirectUrl: string, options?: IIndexedObject, lang?: string) => Promise<Payment | IErrorObject>
 export declare type paymentsGetType = (id: string) => Promise<Payment | IErrorObject>
 export declare type paymentsListType = (options?: Object) => Promise<IMolliePaymentListResult | IErrorObject>
+export declare type Dictionary = { [index: string]: any }
