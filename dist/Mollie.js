@@ -46,7 +46,6 @@ class Mollie {
         return !(result instanceof Error);
     }
 }
-exports.Mollie = Mollie;
 const genQueryString = (query) => {
     if (!query)
         return '';

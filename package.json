@@ -1,7 +1,7 @@
 {
   "name": "molliejs",
   "version": "1.1.0",
-  "description": "Mollie API client for online payments like Ideal, Paypal and Creditcard",
+  "description": "Mollie API client for online payments like Ideal, Paypal and Creditcard in Typescript",
   "main": "dist/Mollie.js",
   "scripts": {
     "test": "jest --no-cache test/",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://GeeX-Renzo@github.com/Geexteam/molliejs.git"
+    "url": "git@github.com:Corgi-IT/molliejs.git"
   },
   "keywords": [
     "mollie",
@@ -51,12 +51,12 @@
     "vvvgiftcard",
     "webshopgiftcard"
   ],
-  "author": "Renzo Roso <renzo@geex.company>",
+  "author": "Renzo Roso <renzo@corgi-it.nl>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/Geexteam/molliejs/issues"
+    "url": "https://github.com/Corgi-IT/molliejs/issues"
   },
-  "homepage": "https://github.com/Geexteam/molliejs#readme",
+  "homepage": "https://github.com/Corgi-IT/molliejs#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",

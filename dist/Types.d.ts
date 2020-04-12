@@ -167,6 +167,13 @@ export interface IMethodListOptions {
     includeWallets?: WalletsEnum;
     include?: MethodListIncludeEnum;
 }
+export interface IFetchOptions {
+    method: string;
+    headers: {
+        [key: string]: any;
+    };
+    body?: string;
+}
 export interface IIndexedObject {
     [key: string]: any;
 }
