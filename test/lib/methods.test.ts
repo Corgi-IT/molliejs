@@ -1,8 +1,8 @@
 "use strict";
-import Mollie from "../../Mollie";
-import {MethodListIncludeEnum, MethodResourceEnum, SequenceTypeEnum} from "../../Types";
+import Mollie from "../../dist/Mollie";
+import {MethodListIncludeEnum, MethodResourceEnum, SequenceTypeEnum} from "../../dist/Types";
 import {join} from 'path';
-import MollieMethods from "../../lib/methods";
+import MollieMethods from "../../dist/lib/methods";
 
 describe('Payments', () => {
     let check: number = 0;

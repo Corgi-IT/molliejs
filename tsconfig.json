@@ -72,7 +72,9 @@
         "scripts",
         "old",
         "node_modules",
-        "coverage"
+        "coverage",
+        "test",
+        "examples"
     ],
     "compileOnSave": true
 }

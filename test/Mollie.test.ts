@@ -1,4 +1,4 @@
-import Mollie from '../Mollie';
+import Mollie from '../dist/Mollie';
 import {join} from "path";
 
 describe('Mollie Test', () => {

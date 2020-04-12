@@ -191,6 +191,12 @@ export interface IMethodListOptions {
     include?: MethodListIncludeEnum,
 }
 
+export interface IFetchOptions {
+    method: string;
+    headers: {[key: string]: any};
+    body?: string;
+}
+
 export interface IIndexedObject {
     [key: string]: any,
 }

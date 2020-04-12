@@ -1,7 +1,7 @@
 "use strict";
-import Mollie from "../../Mollie";
-import Payment from "../../classes/Payment";
-import {Dictionary, IAmount} from "../../Types";
+import Mollie from "../../dist/Mollie";
+import Payment from "../../dist/classes/Payment";
+import {Dictionary, IAmount} from "../../dist/Types";
 import {join} from 'path';
 
 describe('Payments', () => {

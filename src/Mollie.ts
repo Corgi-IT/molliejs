@@ -1,4 +1,4 @@
-import {Dictionary, IErrorObject, IIndexedObject} from "./Types";
+import {Dictionary, IErrorObject, IFetchOptions, IIndexedObject} from "./Types";
 
 // const Payment = require('./classes/Payment');
 import MolliePayments from './lib/payments';
@@ -6,7 +6,7 @@ import MolliePayments from './lib/payments';
 import fetch from 'node-fetch';
 import MollieMethods from "./lib/methods";
 
-export class Mollie {
+class Mollie {
 
     readonly key: string;
     payments: MolliePayments = new MolliePayments(this);
@@ -20,13 +20,13 @@ export class Mollie {
         this.key = key;
     }
 
-    async request(method: string, extension: string, data?: IIndexedObject, urlParameters?: Dictionary): Promise<any | Error> {
+    async request(method: string, extension: string, data?: object, urlParameters?: Dictionary): Promise<any | Error> {
         if (!this.key) {
             return new Error('There is no API key I can use, please set your key `this.key`');
         }
         method = method.toLowerCase();
 
-        const fetchOptions: IIndexedObject = {
+        const fetchOptions: IFetchOptions = {
             method,
             headers: {
                 'Content-Type': 'application/json',
