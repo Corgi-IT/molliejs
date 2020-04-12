@@ -1,0 +1,54 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0.0",
+        "title": "MollieJS example Swagger Documentation",
+        "description": "Examples server with swagger UI for easy testing"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/payments/list": {
+            "get": {
+                "description": "Get's a list of previously created payments with their status",
+                "produces": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Response from Mollie API"
+                    }
+                }
+            }
+        },
+        "/methods/list": {
+            "get": {
+                "description": "Get's a list of enabled methods in Mollie",
+                "produces": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Response from Mollie API"
+                    }
+                }
+            }
+        },
+        "/methods/list/all": {
+            "get": {
+                "description": "Get's a list of all possible methods in Mollie",
+                "produces": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Response from Mollie API"
+                    }
+                }
+            }
+        }
+    }
+}
