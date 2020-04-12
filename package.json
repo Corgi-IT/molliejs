@@ -8,7 +8,6 @@
     "build": "tsc",
     "build-test": "npm run build && npm run test",
     "lint": "$(npm bin)/eslint .",
-    "eslint-pre-commit": "./scripts/eslint-pre-commit",
     "auto-test": "nodemon --ignore coverage/ -x \"npm test && npm run lint\"",
     "examples-server": "ts-node examples/server.ts"
   },
