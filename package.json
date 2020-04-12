@@ -12,11 +12,6 @@
     "auto-test": "nodemon --ignore coverage/ -x \"npm test && npm run lint\"",
     "examples-server": "ts-node examples/server.ts"
   },
-  "pre-commit": [
-    "eslint-pre-commit",
-    "lint",
-    "test"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://GeeX-Renzo@github.com/Geexteam/molliejs.git"
