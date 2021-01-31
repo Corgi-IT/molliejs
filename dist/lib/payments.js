@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Payment_1 = __importDefault(require("../classes/Payment"));
-const Formatter_1 = require("./Formatter");
 const denied = require('obj-denied');
 const { assign } = Object;
 class MolliePayments {
@@ -27,10 +26,13 @@ class MolliePayments {
                     return new Error('recurringType needs value "first" or "recurring"');
                 }
             }
-            const formatObject = Formatter_1.getCurrencyFormatNumbersOnly(amount.currency);
-            amount.value = `${Formatter_1.formatCurrency(amount.value, formatObject, lang || 'nl-NL')}`;
+            const a = { ...amount };
+            a.value = parseFloat(`${a.value}`).toFixed(2);
+            if (a.value === 'NaN') {
+                return new Error(`Value "${amount.value}" is not a valid value.`);
+            }
             const opts = assign({
-                amount,
+                amount: a,
                 description,
                 redirectUrl
             }, options);

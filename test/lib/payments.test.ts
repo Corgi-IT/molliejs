@@ -66,6 +66,19 @@ describe('Payments', () => {
 
                 expect(result).toBeInstanceOf(Error);
             });
+
+            it('Should return an error object if the amount is invalid', async () => {
+                const invalidAmount = {...amount};
+                invalidAmount.value = '€ 10.00';
+
+                const result = await mollieOne.payments.create(
+                    invalidAmount,
+                    description,
+                    redirectUrl
+                );
+
+                expect(result).toBeInstanceOf(Error);
+            })
         });
 
         describe('Success', () => {
@@ -77,6 +90,17 @@ describe('Payments', () => {
 
             it('Should have basic properties', async () => {
                 const payment = await mollieOne.payments.create(amount, description, redirectUrl);
+
+                expect(payment).toHaveProperty('id');
+                expect(payment).toHaveProperty('status');
+                expect(payment).toHaveProperty('amount');
+                expect(payment).toHaveProperty('description');
+            });
+
+            it('Should work when a string is used instead of a number', async () => {
+                const a = {...amount};
+                a.value = '10.00';
+                const payment = await mollieOne.payments.create(a, description, redirectUrl);
 
                 expect(payment).toHaveProperty('id');
                 expect(payment).toHaveProperty('status');

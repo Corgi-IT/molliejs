@@ -40,12 +40,16 @@ export default class MolliePayments {
             }
         }
 
-        const formatObject: ICurrencyFormatNumbersOnlyObject = getCurrencyFormatNumbersOnly(amount.currency);
+        const a = {...amount};
 
-        amount.value = `${formatCurrency(amount.value, formatObject, lang || 'nl-NL')}`;
+        a.value = parseFloat(`${a.value}`).toFixed(2);
+
+        if(a.value === 'NaN') {
+            return new Error(`Value "${amount.value}" is not a valid value.`);
+        }
 
         const opts = assign({
-            amount,
+            amount: a,
             description,
             redirectUrl
         }, options);
